@@ -3,3 +3,11 @@ fixtypos.patch
 fixpowerpc.patch
 fixi386.patch
 wscript_py3.patch
+waflib-py311.patch
+ffmpeg5.patch
+waflib-py312.patch
+ffmpeg5.1.patch
+ffmpeg5.1-adjust.patch
+fixpy312.patch
+numpy2.patch
+assert_almost_equal.patch

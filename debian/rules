@@ -21,8 +21,7 @@ export PYBUILD_AFTER_TEST=rm -rf '{dir}/python/tests/sounds'
 %:
 	dh $@ --with python3 --buildsystem=pybuild
 
-override_dh_auto_clean:
-	dh_auto_clean --buildsystem=pybuild
+execute_after_dh_auto_clean:
 	-$(WAF_CMD) distclean
 	rm -rf python/ext/config.h
 	rm -rf aubio.egg-info/
@@ -44,19 +43,14 @@ override_dh_auto_clean:
 override_dh_auto_configure:
 	$(WAF_CMD) configure $(WAF_OPTIONS)
 
-override_dh_auto_build:
+execute_before_dh_auto_build:
 	$(WAF_CMD) build $(WAF_OPTIONS)
-	dh_auto_build --buildsystem=pybuild
 
 override_dh_auto_test:
 	# run tests
 	LD_LIBRARY_PATH=$(CURDIR)/build/src:$(LD_LIBRARY_PATH) \
 		dh_auto_test -- --test-pytest --test-args $(CURDIR)/python/tests/
 
-override_dh_auto_install:
+execute_before_dh_auto_install:
 	# library
 	$(WAF_CMD) install $(WAF_OPTIONS)
-	# python extension
-	dh_auto_install --buildsystem=pybuild
-	# call dh_numpy to add dependency on numpy abi
-	if [ -x /usr/bin/dh_numpy ]; then dh_numpy; fi

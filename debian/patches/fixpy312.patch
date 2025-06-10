@@ -1,0 +1,49 @@
+Description: Fix Python 3.12 compatibility
+Author: Zixing Liu <zixing.liu@canonical.com>
+Forwarded: no
+Last-Update: 2024-09-17
+---
+--- aubio-0.4.9.orig/python/ext/ufuncs.c
++++ aubio-0.4.9/python/ext/ufuncs.c
+@@ -3,8 +3,8 @@
+ 
+ typedef smpl_t (*aubio_unary_func_t)(smpl_t input);
+ 
+-static void aubio_PyUFunc_d_d(char **args, npy_intp *dimensions,
+-                            npy_intp* steps, void* data)
++static void aubio_PyUFunc_d_d(char **args, const npy_intp *dimensions,
++                            const npy_intp* steps, void* data)
+ {
+     npy_intp i;
+     npy_intp n = dimensions[0];
+@@ -22,8 +22,8 @@ static void aubio_PyUFunc_d_d(char **arg
+     }
+ }
+ 
+-static void aubio_PyUFunc_f_f_As_d_d(char **args, npy_intp *dimensions,
+-                            npy_intp* steps, void* data)
++static void aubio_PyUFunc_f_f_As_d_d(char **args, const npy_intp *dimensions,
++                            const npy_intp* steps, void* data)
+ {
+     npy_intp i;
+     npy_intp n = dimensions[0];
+--- aubio-0.4.9.orig/python/lib/gen_code.py
++++ aubio-0.4.9/python/lib/gen_code.py
+@@ -106,7 +106,7 @@ def get_name(proto):
+ 
+ def get_return_type(proto):
+     import re
+-    paramregex = re.compile('(\w+ ?\*?).*')
++    paramregex = re.compile(r'(\w+ ?\*?).*')
+     outputs = paramregex.findall(proto)
+     assert len(outputs) == 1
+     return outputs[0].replace(' ', '')
+@@ -137,7 +137,7 @@ def get_params(proto):
+     returns: ['int argc', 'char ** argv']
+     """
+     import re
+-    paramregex = re.compile('.*\((.*)\);')
++    paramregex = re.compile(r'.*\((.*)\);')
+     a = paramregex.findall(proto)[0].split(', ')
+     #a = [i.replace('const ', '') for i in a]
+     return a

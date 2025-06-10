@@ -1,3 +1,57 @@
+aubio (0.4.9-4.7) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Relax assert_equal to assert_almost_equal in unittests (Closes: #1095283)
+  * Refresh patches
+  * B-D on dh-sequence-numpy3
+  * Use execute_after_dh_... rather than override_dh_... where appropriate
+
+ -- IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org>  Sun, 09 Feb 2025 23:11:11 +0100
+
+aubio (0.4.9-4.6) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Add Numpy 2.x patch (Closes: #1094369)
+
+ -- Alexandre Detiste <tchet@debian.org>  Wed, 05 Feb 2025 20:17:52 +0100
+
+aubio (0.4.9-4.5) unstable; urgency=medium
+
+  * Non-maintainer upload.
+
+  * Backport fix for FTBFS with FFMpeg-7 from upstream via Ubuntu
+    (Closes: #1072399)
+  * Backport fix for FTBFS with Python3.12 from Ubuntu.
+    Thanks to Zixing Liu <zixing.liu@canonical.com> (Closes: #1074827)
+
+ -- IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org>  Sat, 05 Oct 2024 01:40:39 +0200
+
+aubio (0.4.9-4.4) unstable; urgency=medium
+
+  * Non-maintainer upload.
+
+  [ Vladimir Petko ]
+  * d/p/waflib-py312.patch: cherry-pick waf patch to resolve python 3.12
+    build failure due to imp module removal. Closes: #1061736.
+
+ -- Matthias Klose <doko@debian.org>  Wed, 07 Feb 2024 00:46:01 +0100
+
+aubio (0.4.9-4.3) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * waf compatibility with Python3.11 (Closes: #1028178)
+
+ -- IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org>  Sun, 15 Jan 2023 21:40:50 +0100
+
+aubio (0.4.9-4.2) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Add patch to build against ffmpeg-5.0 (Closes: #1004787)
+  * Add salsa-ci configuration
+  * Call dh_numpy3 to add dependency on numpy abi
+
+ -- IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org>  Thu, 30 Jun 2022 22:35:01 +0200
+
 aubio (0.4.9-4.1) unstable; urgency=medium
 
   * Non-maintainer upload.

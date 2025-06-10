@@ -1,0 +1,20 @@
+Description: Fix compilation with ffmpeg-5.0
+Author: Paul Brossier
+Origin: upstream
+Applied-Upstream: https://github.com/aubio/aubio/commit/8a05420e5dd8c7b8b2447f82dc919765876511b3
+Last-Update: 2022-06-30
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- aubio.orig/src/io/source_avcodec.c
++++ aubio/src/io/source_avcodec.c
+@@ -68,6 +68,10 @@
+ #define AUBIO_AVCODEC_MAX_BUFFER_SIZE AV_INPUT_BUFFER_MIN_SIZE
+ #endif
+ 
++#if LIBAVCODEC_VERSION_MAJOR >= 59
++#define FF_API_LAVF_AVCTX 1
++#endif
++
+ struct _aubio_source_avcodec_t {
+   uint_t hop_size;
+   uint_t samplerate;

@@ -3,6 +3,7 @@ Section: sound
 Priority: optional
 Maintainer: Paul Brossier <piem@debian.org>
 Build-Depends: debhelper-compat (= 12),
+               dh-sequence-numpy3,
                libtool,
                libjack-dev | libjack-jackd2-dev,
                libavcodec-dev,

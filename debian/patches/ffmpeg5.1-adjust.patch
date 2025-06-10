@@ -1,0 +1,58 @@
+Description: [source_avcodec] adjust detection of AVChannelLayout (>ffmpeg 5.0)
+Author: Paul Brossier <piem@piem.org>
+Origin: upstream, https://github.com/aubio/aubio/commit/0b947f9634937d27589d995ec90e90d763aca86f
+Last-Update: 2024-09-17
+---
+Index: aubio/src/io/source_avcodec.c
+===================================================================
+--- aubio.orig/src/io/source_avcodec.c
++++ aubio/src/io/source_avcodec.c
+@@ -56,6 +56,12 @@
+ #define av_packet_unref av_free_packet
+ #endif
+ 
++#if LIBAVUTIL_VERSION_INT < AV_VERSION_INT(57,28,100)
++#warning "libavutil < 57.28.100 is deprecated"
++#else
++#define LIBAVUTIL_HAS_CH_LAYOUT
++#endif
++
+ #include "aubio_priv.h"
+ #include "fvec.h"
+ #include "fmat.h"
+@@ -263,7 +269,7 @@ aubio_source_avcodec_t * new_aubio_sourc
+ 
+   /* get input specs */
+   s->input_samplerate = avCodecCtx->sample_rate;
+-#ifdef AVUTIL_CHANNEL_LAYOUT_H
++#ifdef LIBAVUTIL_HAS_CH_LAYOUT
+   s->input_channels   = avCodecCtx->ch_layout.nb_channels;
+ #else
+   s->input_channels   = avCodecCtx->channels;
+@@ -325,7 +331,7 @@ void aubio_source_avcodec_reset_resample
+ #elif defined(HAVE_SWRESAMPLE)
+     SwrContext *avr = swr_alloc();
+ #endif /* HAVE_AVRESAMPLE || HAVE_SWRESAMPLE */
+-#ifdef AVUTIL_CHANNEL_LAYOUT_H
++#ifdef LIBAVUTIL_HAS_CH_LAYOUT
+     AVChannelLayout input_layout;
+     AVChannelLayout output_layout;
+     av_channel_layout_default(&input_layout, s->input_channels);
+@@ -387,7 +393,7 @@ void aubio_source_avcodec_readframe(aubi
+   int out_samples = 0;
+ #elif defined(HAVE_SWRESAMPLE)
+   int in_samples = avFrame->nb_samples;
+-#ifdef AVUTIL_CHANNEL_LAYOUT_H
++#ifdef LIBAVUTIL_HAS_CH_LAYOUT
+   int max_out_samples = AUBIO_AVCODEC_MAX_BUFFER_SIZE / avCodecCtx->ch_layout.nb_channels;
+ #else
+   int max_out_samples = AUBIO_AVCODEC_MAX_BUFFER_SIZE / avCodecCtx->channels;
+@@ -458,7 +464,7 @@ void aubio_source_avcodec_readframe(aubi
+   }
+ 
+ #if LIBAVUTIL_VERSION_MAJOR > 52
+-#ifdef AVUTIL_CHANNEL_LAYOUT_H
++#ifdef LIBAVUTIL_HAS_CH_LAYOUT
+   int frame_channels = avFrame->ch_layout.nb_channels;
+ #else
+   int frame_channels = avFrame->channels;
